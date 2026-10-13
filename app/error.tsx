@@ -15,6 +15,7 @@ export default function Error({
         We couldn&apos;t reach the movie API. It might be slow, down, or
         unreachable right now.
       </p>
+      <div className="flex flex-wrap gap-3">
       <button
         type="button"
         onClick={reset}
@@ -22,6 +23,14 @@ export default function Error({
       >
         Try again
       </button>
+      <button
+          type="button"
+          onClick={() => window.location.assign("/")}
+          className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
+        >
+          Back to home
+        </button>
+      </div>
     </main>
   );
 }
