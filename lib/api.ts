@@ -37,8 +37,8 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 /** TMDB-backed trending movies fetch. */
-export function getTrendingMovies(): Promise<Movie[]> {
-  return apiFetch<Movie[]>("/movies/trending", { cache: "no-store" });
+export function getTrendingMovies(page = 1): Promise<Movie[]> {
+  return apiFetch<Movie[]>(`/movies/trending?page=${page}`, { cache: "no-store" });
 }
 
 // TODO(candidate): add a searchMovies(query, page) function here once the API exposes

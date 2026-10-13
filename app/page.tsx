@@ -1,3 +1,4 @@
+import { Pagination } from "~/components/Pagination";
 import { SearchBar } from "~/components/SearchBar";
 import { TrendingGrid } from "~/components/TrendingGrid";
 import { getTrendingMovies } from "~/lib/api";
@@ -7,8 +8,21 @@ import { getTrendingMovies } from "~/lib/api";
 // during `next build` in CI.
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
-  const trendingMovies = await getTrendingMovies();
+
+const TRENDING_PAGE_SIZE = 24;
+
+export default async function HomePage({
+  searchParams
+}:{
+  searchParams: Promise<{page?: string}>;
+}) {
+
+  const { page: rawPage } = await searchParams;
+  const page = Number(rawPage ?? 1);
+  const trendingMovies = await getTrendingMovies(page);
+
+
+  const hasNext = trendingMovies.length === TRENDING_PAGE_SIZE;
 
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10">
@@ -24,6 +38,13 @@ export default async function HomePage() {
           Trending this week
         </h2>
         <TrendingGrid movies={trendingMovies} />
+        {(page > 1 || hasNext) && (
+        <Pagination
+          page={page}
+          hasNext={hasNext}
+          hrefFor={(target) => `/?page=${target}`}
+        />
+      )}
       </section>
     </main>
   );
