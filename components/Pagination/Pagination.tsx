@@ -4,6 +4,7 @@ export interface PaginationProps {
   page: number;
   hasNext: boolean;
   hrefFor: (page: number) => string;
+  totalPages?: number;
 }
 
 const linkClass =
@@ -11,7 +12,7 @@ const linkClass =
 const disabledClass =
   "rounded-md border border-border px-3 py-2 text-sm text-muted opacity-50";
 
-export function Pagination({ page, hasNext, hrefFor }: PaginationProps) {
+export function Pagination({ page, hasNext, hrefFor, totalPages }: PaginationProps) {
   const hasPrevious = page > 1;
 
   return (
@@ -30,7 +31,7 @@ export function Pagination({ page, hasNext, hrefFor }: PaginationProps) {
       )}
 
       <p className="text-sm text-muted">
-        {`Page ${page}`}
+        {totalPages ? `Page ${page} of ${totalPages}` : `Page ${page}`}
       </p>
 
       {hasNext ? (
