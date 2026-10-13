@@ -1,19 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 
-export function SearchBar() {
+interface SearchBarProps {
+  defaultValue?: string;
+}
+
+
+export function SearchBar({ defaultValue = "" }: SearchBarProps) {
   const [query, setQuery] = useState("");
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  // TODO(candidate): wire this up to lib/api.ts's searchMovies() and render results
-  // (with pagination) instead of just logging. See lib/api.ts and app/page.tsx.
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log("TODO: search for", query);
+    
+    const trimmed = query.trim();
+    const href = trimmed
+      ? `/?${new URLSearchParams({ query: trimmed }).toString()}`
+      : "/";
+
+    startTransition(() => router.push(href));
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full max-w-md gap-2">
+    <form
+    key={defaultValue}
+    onSubmit={handleSubmit} className="flex w-full max-w-md gap-2">
       <label htmlFor="movie-search" className="sr-only">
         Search for a movie
       </label>
@@ -29,8 +43,10 @@ export function SearchBar() {
       <button
         type="submit"
         className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-500"
+        disabled={isPending}
+        aria-busy={isPending}
       >
-        Search
+        {isPending ? "Searching…" : "Search"}
       </button>
     </form>
   );

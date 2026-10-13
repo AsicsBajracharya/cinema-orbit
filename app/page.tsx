@@ -1,5 +1,6 @@
 import { Pagination } from "~/components/Pagination";
 import { SearchBar } from "~/components/SearchBar";
+import { SearchResults } from "~/components/SearchResults";
 import { TrendingGrid } from "~/components/TrendingGrid";
 import { getTrendingMovies } from "~/lib/api";
 
@@ -14,10 +15,12 @@ const TRENDING_PAGE_SIZE = 24;
 export default async function HomePage({
   searchParams
 }:{
-  searchParams: Promise<{page?: string}>;
+  searchParams: Promise<{query?: string; page?: string}>;
 }) {
 
-  const { page: rawPage } = await searchParams;
+  const { query: rawQuery, page: rawPage } = await searchParams;
+
+  const query = rawQuery?.trim() ?? "";
   const page = Number(rawPage ?? 1);
   const trendingMovies = await getTrendingMovies(page);
 
@@ -30,22 +33,36 @@ export default async function HomePage({
         <h1 className="text-2xl font-semibold text-foreground">
           Movie Search Case
         </h1>
-        <SearchBar />
+        <SearchBar defaultValue={query} />
       </header>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-medium text-foreground">
-          Trending this week
-        </h2>
-        <TrendingGrid movies={trendingMovies} />
-        {(page > 1 || hasNext) && (
+      {query ? (
+        <SearchResults query={query} page={page} />
+      ) : (
+        <TrendingPanel page={page} />
+      )}
+    </main>
+  );
+}
+
+
+async function TrendingPanel({ page }: { page: number }) {
+  const movies = await getTrendingMovies(page);
+  const hasNext = movies.length === TRENDING_PAGE_SIZE;
+
+  return (
+    <section className="flex flex-col gap-4">
+      <h2 className="text-lg font-medium text-foreground">
+        Trending this week
+      </h2>
+      <TrendingGrid movies={movies} />
+      {(page > 1 || hasNext) && (
         <Pagination
           page={page}
           hasNext={hasNext}
           hrefFor={(target) => `/?page=${target}`}
         />
       )}
-      </section>
-    </main>
+    </section>
   );
 }
