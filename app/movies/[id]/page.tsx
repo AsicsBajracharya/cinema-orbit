@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ApiError, getMovieDetail } from "~/lib/api";
+import { Trailer } from "~/components/Trailer";
+import { ApiError, getMovieDetail, getMovieVideos } from "~/lib/api";
 
 
 export const dynamic = "force-dynamic";
@@ -22,7 +23,7 @@ export default async function MoviePage({
       }
       throw error;
     }
-
+    const videos = await getMovieVideos(id);
     const year = movie.releaseDate ? movie.releaseDate.slice(0, 4) : null;
     return (
         <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10">
@@ -102,6 +103,13 @@ export default async function MoviePage({
               </p>
             </div>
           </div>
+
+          <section aria-labelledby="trailer-heading" className="flex max-w-4xl flex-col gap-4">
+        <h2 id="trailer-heading" className="text-lg font-medium text-foreground">
+          Trailer
+        </h2>
+        <Trailer videos={videos} movieTitle={movie.title} />
+      </section>
         </main>
       );
 }

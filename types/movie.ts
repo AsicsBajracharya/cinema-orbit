@@ -21,4 +21,12 @@ export interface MovieDetail extends Movie {
   genres: string[];
 }
 
+export interface MovieVideo {
+  key: string;
+  name: string;
+  site: string;
+  type: string;
+}
+
+
 
