@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { tv } from "tailwind-variants";
 
 import type { Movie } from "~/types/movie";
@@ -40,7 +41,14 @@ export function MovieCard({ movie }: MovieCardProps) {
         )}
       </div>
       <div className={body()}>
-        <h3 className={title()}>{movie.title}</h3>
+        <h3 className={title()}>
+          <Link
+            href={`/movies/${movie.id}`}
+            className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
+          >
+            {movie.title}
+          </Link>
+        </h3>
         <div className={meta()}>
           {year && <span>{year}</span>}
           <span aria-label={`Rated ${movie.voteAverage.toFixed(1)} out of 10`}>

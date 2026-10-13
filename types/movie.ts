@@ -15,3 +15,10 @@ export interface MovieSearchResponse {
   results: Movie[];
 }
 
+export interface MovieDetail extends Movie {
+  runtime: number | null;
+  tagline: string | null;
+  genres: string[];
+}
+
+
