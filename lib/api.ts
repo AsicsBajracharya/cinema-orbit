@@ -36,9 +36,14 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T;
 }
 
+const LIST_REVALIDATE_SECONDS = 60;
+const DETAIL_REVALIDATE_SECONDS = 300;
+
 /** TMDB-backed trending movies fetch. */
 export function getTrendingMovies(page = 1): Promise<Movie[]> {
-  return apiFetch<Movie[]>(`/movies/trending?page=${page}`, { cache: "no-store" });
+  return apiFetch<Movie[]>(`/movies/trending?page=${page}`, {
+    next: { revalidate: LIST_REVALIDATE_SECONDS },
+  });
 }
 
 export function searchMovies(
@@ -47,18 +52,20 @@ export function searchMovies(
 ): Promise<MovieSearchResponse> {
   const params = new URLSearchParams({ query, page: String(page) });
 
-  return apiFetch<MovieSearchResponse>(`/movies/search?${params}`);
+  return apiFetch<MovieSearchResponse>(`/movies/search?${params}`,{
+    next: { revalidate: LIST_REVALIDATE_SECONDS },
+  });
 }
 
 export function getMovieDetail(id: string): Promise<MovieDetail> {
   return apiFetch<MovieDetail>(`/movies/${encodeURIComponent(id)}`, {
-    cache: "no-store",
+    next: { revalidate: DETAIL_REVALIDATE_SECONDS },
   });
 }
 
 export function getMovieVideos(id: string): Promise<MovieVideo[]> {
   return apiFetch<MovieVideo[]>(`/movies/${encodeURIComponent(id)}/videos`, {
-    cache: "no-store",
+    next: { revalidate: DETAIL_REVALIDATE_SECONDS },
   });
 }
 
