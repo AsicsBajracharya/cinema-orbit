@@ -22,10 +22,6 @@ export default async function HomePage({
 
   const query = rawQuery?.trim() ?? "";
   const page = Number(rawPage ?? 1);
-  const trendingMovies = await getTrendingMovies(page);
-
-
-  const hasNext = trendingMovies.length === TRENDING_PAGE_SIZE;
 
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10">
