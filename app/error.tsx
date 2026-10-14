@@ -1,10 +1,10 @@
 "use client";
 
 export default function Error({
-  reset,
+  retry,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
+  retry: () => void;
 }) {
   return (
     <main className="mx-auto flex max-w-6xl flex-col items-start gap-4 px-4 py-10">
@@ -18,7 +18,7 @@ export default function Error({
       <div className="flex flex-wrap gap-3">
       <button
         type="button"
-        onClick={reset}
+        onClick={retry}
         className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-500"
       >
         Try again
