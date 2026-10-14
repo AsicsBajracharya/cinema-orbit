@@ -82,7 +82,7 @@ export function searchMovies(
   const params = new URLSearchParams({ query, page: String(page) });
 
   return apiFetch<MovieSearchResponse>(`/movies/search?${params}`,{
-    next: { revalidate: LIST_REVALIDATE_SECONDS },
+    cache: "no-store",
   });
 }
 
