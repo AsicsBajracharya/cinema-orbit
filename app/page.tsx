@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { Pagination } from "~/components/Pagination";
 import { SearchBar } from "~/components/SearchBar";
 import { SearchResults } from "~/components/SearchResults";
+import { SearchResultsSkeleton } from "~/components/SearchResultsSkeleton";
 import { TrendingGrid } from "~/components/TrendingGrid";
 import { getTrendingMovies } from "~/lib/api";
 
@@ -31,12 +33,13 @@ export default async function HomePage({
         </h1>
         <SearchBar defaultValue={query} />
       </header>
-
-      {query ? (
-        <SearchResults query={query} page={page} />
-      ) : (
-        <TrendingPanel page={page} />
-      )}
+      <Suspense key={`${query}:${page}`} fallback={<SearchResultsSkeleton />}>
+        {query ? (
+          <SearchResults query={query} page={page} />
+        ) : (
+          <TrendingPanel page={page} />
+        )}
+      </Suspense>
     </main>
   );
 }
