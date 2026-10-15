@@ -1,12 +1,14 @@
 import Image from "next/image";
+import Link from "next/link";
 import { tv } from "tailwind-variants";
 
 import type { Movie } from "~/types/movie";
+import { Rating } from "../Rating";
 
 const card = tv({
   slots: {
     base: "group overflow-hidden rounded-lg border border-border bg-surface transition-colors hover:bg-surface-hover",
-    posterWrapper: "relative aspect-[2/3] w-full bg-surface",
+    posterWrapper: "relative aspect-2/3 w-full bg-surface",
     body: "flex flex-col gap-1 p-3",
     title: "line-clamp-1 text-sm font-medium text-foreground",
     meta: "flex items-center gap-2 text-xs text-muted",
@@ -28,7 +30,7 @@ export function MovieCard({ movie }: MovieCardProps) {
         {movie.posterPath ? (
           <Image
             src={`https://image.tmdb.org/t/p/w342${movie.posterPath}`}
-            alt={movie.title}
+            alt=""
             fill
             sizes="(min-width: 1024px) 200px, 45vw"
             className="object-cover"
@@ -40,12 +42,17 @@ export function MovieCard({ movie }: MovieCardProps) {
         )}
       </div>
       <div className={body()}>
-        <h3 className={title()}>{movie.title}</h3>
+        <h3 className={title()}>
+          <Link
+            href={`/movies/${movie.id}`}
+            className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
+          >
+            {movie.title}
+          </Link>
+        </h3>
         <div className={meta()}>
           {year && <span>{year}</span>}
-          <span aria-label={`Rated ${movie.voteAverage.toFixed(1)} out of 10`}>
-            ★ {movie.voteAverage.toFixed(1)}
-          </span>
+          <Rating value={movie.voteAverage} />
         </div>
       </div>
     </article>
