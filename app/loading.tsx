@@ -12,7 +12,7 @@ export default function Loading() {
           {Array.from({ length: 12 }).map((_, index) => (
             <div
               key={index}
-              className="aspect-[2/3] w-full motion-safe:animate-pulse rounded-lg bg-surface"
+              className="aspect-2/3 w-full motion-safe:animate-pulse rounded-lg bg-surface"
             />
           ))}
         </div>

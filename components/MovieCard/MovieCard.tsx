@@ -8,7 +8,7 @@ import { Rating } from "../Rating";
 const card = tv({
   slots: {
     base: "group overflow-hidden rounded-lg border border-border bg-surface transition-colors hover:bg-surface-hover",
-    posterWrapper: "relative aspect-[2/3] w-full bg-surface",
+    posterWrapper: "relative aspect-2/3 w-full bg-surface",
     body: "flex flex-col gap-1 p-3",
     title: "line-clamp-1 text-sm font-medium text-foreground",
     meta: "flex items-center gap-2 text-xs text-muted",

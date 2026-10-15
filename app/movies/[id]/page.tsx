@@ -57,7 +57,7 @@ export default async function MoviePage({
           </Link>
     
           <div className="flex flex-col gap-8 md:flex-row">
-            <div className="relative aspect-[2/3] w-full max-w-64 shrink-0 overflow-hidden rounded-lg border border-border bg-surface">
+            <div className="relative aspect-2/3 w-full max-w-64 shrink-0 overflow-hidden rounded-lg border border-border bg-surface">
               {movie.posterPath ? (
                 <Image
                   src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
