@@ -3,6 +3,7 @@ import Link from "next/link";
 import { tv } from "tailwind-variants";
 
 import type { Movie } from "~/types/movie";
+import { Rating } from "../Rating";
 
 const card = tv({
   slots: {
@@ -51,9 +52,7 @@ export function MovieCard({ movie }: MovieCardProps) {
         </h3>
         <div className={meta()}>
           {year && <span>{year}</span>}
-          <span aria-label={`Rated ${movie.voteAverage.toFixed(1)} out of 10`}>
-            ★ {movie.voteAverage.toFixed(1)}
-          </span>
+          <Rating value={movie.voteAverage} />
         </div>
       </div>
     </article>

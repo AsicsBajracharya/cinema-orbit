@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Rating } from "~/components/Rating";
 import { Trailer } from "~/components/Trailer";
 import { ApiError, getMovieDetail, getMovieVideos } from "~/lib/api";
 
@@ -96,14 +97,12 @@ export default async function MoviePage({
                     {movie.runtime ? `${movie.runtime} min` : "Unknown"}
                   </dd>
                 </div>
-                <div>
-                  <dt className="inline">Rating: </dt>
-                  <dd className="inline text-foreground">
-                    <span aria-label={`Rated ${movie.voteAverage.toFixed(1)} out of 10`}>
-                      ★ {movie.voteAverage.toFixed(1)}
-                    </span>
-                  </dd>
-                </div>
+              <div>
+                <dt className="inline">Rating: </dt>
+                <dd className="inline text-foreground">
+                  <Rating value={movie.voteAverage} />
+                </dd>
+              </div>
               </dl>
     
               {movie.genres.length > 0 && (
