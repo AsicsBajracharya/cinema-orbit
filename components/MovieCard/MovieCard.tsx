@@ -29,7 +29,7 @@ export function MovieCard({ movie }: MovieCardProps) {
         {movie.posterPath ? (
           <Image
             src={`https://image.tmdb.org/t/p/w342${movie.posterPath}`}
-            alt={movie.title}
+            alt=""
             fill
             sizes="(min-width: 1024px) 200px, 45vw"
             className="object-cover"
