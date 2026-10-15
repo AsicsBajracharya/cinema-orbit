@@ -25,12 +25,12 @@ export function Pagination({ page, hasNext, hrefFor, totalPages }: PaginationPro
           Previous
         </Link>
       ) : (
-        <span aria-disabled="true" className={disabledClass}>
-          Previous
-        </span>
+          <span className={disabledClass}>
+            Previous <span className="sr-only">(not available)</span>
+          </span>
       )}
 
-      <p className="text-sm text-muted">
+      <p aria-current="page" className="text-sm text-muted">
         {totalPages ? `Page ${page} of ${totalPages}` : `Page ${page}`}
       </p>
 
@@ -39,9 +39,9 @@ export function Pagination({ page, hasNext, hrefFor, totalPages }: PaginationPro
           Next
         </Link>
       ) : (
-        <span aria-disabled="true" className={disabledClass}>
-          Next
-        </span>
+          <span className={disabledClass}>
+            Next <span className="sr-only">(not available)</span>
+          </span>
       )}
     </nav>
   );
