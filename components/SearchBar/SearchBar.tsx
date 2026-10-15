@@ -27,6 +27,7 @@ export function SearchBar({ defaultValue = "" }: SearchBarProps) {
   return (
     <form
     key={defaultValue}
+    role="search"
     onSubmit={handleSubmit} className="flex w-full max-w-md gap-2">
       <label htmlFor="movie-search" className="sr-only">
         Search for a movie
@@ -38,12 +39,12 @@ export function SearchBar({ defaultValue = "" }: SearchBarProps) {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search for a movie…"
-        className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-brand-500 focus:outline-none"
+        className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-brand-500 focus:outline-2 focus:outline-offset-2 focus:outline-brand-500"
       />
       <button
         type="submit"
-        className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-500"
-        disabled={isPending}
+        className="rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-500 focus:outline-2 focus:outline-offset-2 focus:outline-brand-500"
+        aria-disabled={isPending}
         aria-busy={isPending}
       >
         {isPending ? "Searching…" : "Search"}
