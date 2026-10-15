@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -6,6 +7,26 @@ import { ApiError, getMovieDetail, getMovieVideos } from "~/lib/api";
 
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+
+  try {
+    const movie = await getMovieDetail(id);
+    return { title: movie.title };
+  } catch (error) {
+    // A missing movie gets a sensible tab title. The page itself still
+    // calls notFound() below, so the 404 response is unchanged.
+    if (error instanceof ApiError && error.status === 404) {
+      return { title: "Movie not found" };
+    }
+    throw error;
+  }
+}
 
 export default async function MoviePage({
     params,

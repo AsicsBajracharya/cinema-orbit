@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Pagination } from "~/components/Pagination";
@@ -12,6 +13,12 @@ import { firstParam, parsePage } from "~/lib/search-params/search-params";
 // since this page depends on the .NET API being reachable — which it isn't
 // during `next build` in CI.
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ query?: string | string[] }> }): Promise<Metadata> {
+  const { query } = await searchParams;
+  const q = (Array.isArray(query) ? query[0] : query)?.trim();
+  return q ? { title: `Results for “${q}”` } : {};
+}
 
 
 const TRENDING_PAGE_SIZE = 24;
