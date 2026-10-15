@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 export default function Error({
   error:_error,
   reset,
@@ -7,9 +9,18 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
   return (
     <main className="mx-auto flex max-w-6xl flex-col items-start gap-4 px-4 py-10">
-      <h1 className="text-2xl font-semibold text-foreground">
+       <h1
+        ref={headingRef}
+        tabIndex={-1}
+        className="text-2xl font-semibold text-foreground focus:outline-none"
+      >
         Something went wrong
       </h1>
       <p role="alert" className="text-sm text-muted">
