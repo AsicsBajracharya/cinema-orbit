@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { Pagination } from "~/components/Pagination";
 import { TrendingGrid } from "~/components/TrendingGrid";
 import { searchMovies } from "~/lib/api";
@@ -9,6 +10,14 @@ export interface SearchResultsProps {
 
 export async function SearchResults({ query, page }: SearchResultsProps) {
   const result = await searchMovies(query, page);
+
+  // Page is valid in format but beyond the last page: jump to the last one.
+  if (result.totalPages > 0 && page > result.totalPages) {
+    redirect(
+      `/?${new URLSearchParams({ query, page: String(result.totalPages) })}`,
+    );
+  }
+
 
   return (
     <section className="flex flex-col gap-4">

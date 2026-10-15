@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Pagination } from "~/components/Pagination";
 import { SearchBar } from "~/components/SearchBar";
@@ -5,6 +6,7 @@ import { SearchResults } from "~/components/SearchResults";
 import { SearchResultsSkeleton } from "~/components/SearchResultsSkeleton";
 import { TrendingGrid } from "~/components/TrendingGrid";
 import { getTrendingMovies } from "~/lib/api";
+import { firstParam, parsePage } from "~/lib/search-params/search-params";
 
 // Renders per-request rather than being statically generated at build time,
 // since this page depends on the .NET API being reachable — which it isn't
@@ -17,13 +19,18 @@ const TRENDING_PAGE_SIZE = 24;
 export default async function HomePage({
   searchParams
 }:{
-  searchParams: Promise<{query?: string; page?: string}>;
+  searchParams: Promise<{ query?: string | string[]; page?: string | string[] }>;
 }) {
 
   const { query: rawQuery, page: rawPage } = await searchParams;
 
-  const query = rawQuery?.trim() ?? "";
-  const page = Number(rawPage ?? 1);
+  const query = firstParam(rawQuery)?.trim() ?? "";
+
+  const page = parsePage(rawPage);
+  if (page === null) {
+    // Invalid page: send the user to the canonical URL (page 1, same query).
+    redirect(query ? `/?${new URLSearchParams({ query })}` : "/");
+  }
 
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10">
