@@ -10,7 +10,7 @@ export interface PaginationProps {
 const linkClass =
   "rounded-md border border-border px-3 py-2 text-sm text-foreground hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500";
 const disabledClass =
-  "rounded-md border border-border px-3 py-2 text-sm text-muted opacity-50";
+  "cursor-not-allowed rounded-md border border-dashed border-border px-3 py-2 text-sm text-muted";
 
 export function Pagination({ page, hasNext, hrefFor, totalPages }: PaginationProps) {
   const hasPrevious = page > 1;
